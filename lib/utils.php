@@ -117,7 +117,7 @@ function shoestrap_transliterate( $str ) {
  */
 function shoestrap_get_post_teaser( $post_id ) {
 
-	$mode = get_theme_mod( 'blog_post_mode', 'excerpt' );
+	$mode = Kirki::get_option( 'blog_post_mode', 'excerpt' );
 
 	// Get the post
 	$content_post = get_post( $post_id );

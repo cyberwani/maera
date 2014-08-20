@@ -17,9 +17,9 @@ function kirki_required_script() {
 
 					<script>
 						jQuery(document).ready(function($) {
-							<?php if ( isset( $id ) && isset( $value ) && $value == intval( get_theme_mod( $id ) ) ) : ?>
+							<?php if ( isset( $id ) && isset( $value ) && $value == intval( Kirki::get_option( $id ) ) ) : ?>
 								$("#customize-control-<?php echo $control['setting']; ?>").fadeIn(300);
-							<?php elseif ( isset( $id ) && isset( $value ) && $value != intval( get_theme_mod( $id ) ) ) : ?>
+							<?php elseif ( isset( $id ) && isset( $value ) && $value != intval( Kirki::get_option( $id ) ) ) : ?>
 								$("#customize-control-<?php echo $control['setting']; ?>").fadeOut(300);
 							<?php endif; ?>
 

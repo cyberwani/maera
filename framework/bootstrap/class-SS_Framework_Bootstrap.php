@@ -95,7 +95,7 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 			add_filter( 'shoestrap/content_width', array( $this, 'content_width_px' ) );
 
 			// Add stylesheets caching if dev_mode is set to off.
-			if ( 1 == get_theme_mod( 'dev_mode' ) ) {
+			if ( 1 == Kirki::get_option( 'dev_mode' ) ) {
 				add_filter( 'shoestrap/styles/caching', '__return_false' );
 				TimberLoader::CACHE_NONE;
 			} else {
@@ -113,7 +113,7 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 			// Post Meta
 			add_action( 'shoestrap/entry/meta', array( $this, 'meta_elements' ), 10, 1 );
 
-			if ( 'left' == get_theme_mod( 'menu_mode', 'normal' ) ) {
+			if ( 'left' == Kirki::get_option( 'menu_mode', 'normal' ) ) {
 
 				add_action( 'shoestrap/top-bar/before', array( $this, 'open_nav_left_row' ), 1 );
 				add_filter( 'shoestrap/topbar/class', array( $this, 'return_nav_left_class' ) );
@@ -127,30 +127,30 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 			add_action( 'shoestrap/topbar/inside/end', array( $this, 'social_links_navbar_content' ) );
 
 			// Conditions for showing share button
-			$social_share_post_types = explode(',', get_theme_mod('social_sharing_singular' ) );
+			$social_share_post_types = explode(',', Kirki::get_option('social_sharing_singular' ) );
 
 			foreach ($social_share_post_types as $key) {
 
 				if ( $key == 'page' ) {
-					if ( get_theme_mod('social_sharing_location') == 'top' ) {
+					if ( Kirki::get_option('social_sharing_location') == 'top' ) {
 						add_action( 'shoestrap/page/pre_content',   array( $this, 'social_sharing' ) );
 					}
-					elseif ( get_theme_mod('social_sharing_location') == 'bottom' ) {
+					elseif ( Kirki::get_option('social_sharing_location') == 'bottom' ) {
 						add_action( 'shoestrap/page/after_content', array( $this, 'social_sharing' ) );
 					}
-					elseif ( get_theme_mod('social_sharing_location') == 'both' ) {
+					elseif ( Kirki::get_option('social_sharing_location') == 'both' ) {
 						add_action( 'shoestrap/page/pre_content',   array( $this, 'social_sharing' ) );
 						add_action( 'shoestrap/page/after_content', array( $this, 'social_sharing' ) );
 					}
 				}
 				if ( $key == 'post' ) {
-					if ( get_theme_mod('social_sharing_location') == 'top' ) {
+					if ( Kirki::get_option('social_sharing_location') == 'top' ) {
 						add_action( 'shoestrap/single/pre_content',   array( $this, 'social_sharing' ) );
 					}
-					elseif ( get_theme_mod('social_sharing_location') == 'bottom' ) {
+					elseif ( Kirki::get_option('social_sharing_location') == 'bottom' ) {
 						add_action( 'shoestrap/single/after_content', array( $this, 'social_sharing' ) );
 					}
-					elseif ( get_theme_mod('social_sharing_location') == 'both' ) {
+					elseif ( Kirki::get_option('social_sharing_location') == 'both' ) {
 						add_action( 'shoestrap/single/pre_content',   array( $this, 'social_sharing' ) );
 						add_action( 'shoestrap/single/after_content', array( $this, 'social_sharing' ) );
 					}
@@ -182,7 +182,7 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 			wp_register_script( 'bootstrap-min', get_template_directory_uri() . '/framework/bootstrap/assets/js/bootstrap.min.js', false, null, true  );
 			wp_enqueue_script( 'bootstrap-min' );
 
-			if ( get_theme_mod( 'wai_aria', 0 ) == 1 ) {
+			if ( Kirki::get_option( 'wai_aria', 0 ) == 1 ) {
 
 				wp_register_script( 'bootstrap-accessibility', get_template_directory_uri() . '/framework/bootstrap/assets/js/bootstrap-accessibility.min.js', false, null, true  );
 				wp_enqueue_script( 'bootstrap-accessibility' );
@@ -222,9 +222,9 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 		function display_feat_image_posts() {
 
 			if ( is_singular() ) {
-				$display = ( 1 == get_theme_mod( 'feat_img_post', 0 ) ) ? true : false;
+				$display = ( 1 == Kirki::get_option( 'feat_img_post', 0 ) ) ? true : false;
 			} else {
-				$display = ( 1 == get_theme_mod( 'feat_img_archive', 0 ) ) ? true : false;
+				$display = ( 1 == Kirki::get_option( 'feat_img_archive', 0 ) ) ? true : false;
 			}
 
 			return $display;
@@ -237,9 +237,9 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 		function get_feat_image_width() {
 
 			if ( is_singular() ) {
-				return get_theme_mod( 'feat_img_post_width', -1 );
+				return Kirki::get_option( 'feat_img_post_width', -1 );
 			} else {
-				return get_theme_mod( 'feat_img_archive_width', -1 );
+				return Kirki::get_option( 'feat_img_archive_width', -1 );
 			}
 
 		}
@@ -250,9 +250,9 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 		function get_feat_image_height() {
 
 			if ( is_singular() ) {
-				return get_theme_mod( 'feat_img_post_height', -1 );
+				return Kirki::get_option( 'feat_img_post_height', -1 );
 			} else {
-				return get_theme_mod( 'feat_img_archive_height', -1 );
+				return Kirki::get_option( 'feat_img_archive_height', -1 );
 			}
 
 		}
@@ -264,9 +264,9 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 		function timber_extras( $data ) {
 
 			// Get the layout we're using (sidebar arrangement).
-			$layout = apply_filters( 'shoestrap/layout/modifier', get_theme_mod( 'layout', 1 ) );
+			$layout = apply_filters( 'shoestrap/layout/modifier', Kirki::get_option( 'layout', 1 ) );
 
-			$sidebars_on_front = get_theme_mod( 'layout_sidebar_on_front', 0 );
+			$sidebars_on_front = Kirki::get_option( 'layout_sidebar_on_front', 0 );
 
 			If ( 0 == $layout || ( 0 == $sidebars_on_front && ( is_home() || is_front_page() ) ) ) {
 
@@ -297,8 +297,8 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 			$post = get_post( $post_id );
 
 			// Get the options from the db
-			$metas       = get_theme_mod( 'shoestrap_entry_meta_config', 'post-format, date, author, comments' );
-			$date_format = get_theme_mod( 'date_meta_format', 1 );
+			$metas       = Kirki::get_option( 'shoestrap_entry_meta_config', 'post-format, date, author, comments' );
+			$date_format = Kirki::get_option( 'date_meta_format', 1 );
 
 			$categories_list = has_category( '', $post_id ) ? get_the_category_list( __( ', ', 'shoestrap' ), '', $post_id ) : false;
 			$tag_list        = has_tag( '', $post_id ) ? get_the_tag_list( '', __( ', ', 'shoestrap' ) ) : false;
@@ -309,7 +309,7 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 			}
 
 			// No need to proceed if we're on a single post and we don't want to display the post meta
-			if ( is_singular() && 1 != get_theme_mod( 'single_meta', 1 ) ) {
+			if ( is_singular() && 1 != Kirki::get_option( 'single_meta', 1 ) ) {
 				return;
 			}
 
@@ -434,20 +434,20 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 		 */
 		public static function content_width_px() {
 
-			$layout = apply_filters( 'shoestrap/layout/modifier', get_theme_mod( 'layout', 1 ) );
+			$layout = apply_filters( 'shoestrap/layout/modifier', Kirki::get_option( 'layout', 1 ) );
 
-			$container  = filter_var( get_theme_mod( 'screen_large_desktop', 1200 ), FILTER_SANITIZE_NUMBER_INT );
-			$gutter     = filter_var( get_theme_mod( 'gutter', 30 ), FILTER_SANITIZE_NUMBER_INT );
+			$container  = filter_var( Kirki::get_option( 'screen_large_desktop', 1200 ), FILTER_SANITIZE_NUMBER_INT );
+			$gutter     = filter_var( Kirki::get_option( 'gutter', 30 ), FILTER_SANITIZE_NUMBER_INT );
 
 			$main_span  = filter_var( self::layout_classes( 'content' ), FILTER_SANITIZE_NUMBER_INT );
 			$main_span  = str_replace( '-' , '', $main_span );
 
 			// If the layout is #5, override the default function and calculate the span width of the main area again.
 			if ( is_active_sidebar( 'sidebar-secondary' ) && is_active_sidebar( 'sidebar-primary' ) && $layout == 5 ) {
-				$main_span = 12 - intval( get_theme_mod( 'layout_primary_width', 4 ) ) - intval( get_theme_mod( 'layout_secondary_width', 3 ) );
+				$main_span = 12 - intval( Kirki::get_option( 'layout_primary_width', 4 ) ) - intval( Kirki::get_option( 'layout_secondary_width', 3 ) );
 			}
 
-			if ( is_front_page() && get_theme_mod( 'layout_sidebar_on_front', 0 ) != 1 ) {
+			if ( is_front_page() && Kirki::get_option( 'layout_sidebar_on_front', 0 ) != 1 ) {
 				$main_span = 12;
 			}
 
@@ -546,7 +546,7 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 		 */
 		function widgets_class() {
 
-			$widgets_mode = get_theme_mod( 'widgets_mode', 0 );
+			$widgets_mode = Kirki::get_option( 'widgets_mode', 0 );
 
 			if ( 0 == $widgets_mode ) {
 				return 'panel panel-default';
@@ -562,7 +562,7 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 		 */
 		function widgets_before_title() {
 
-			$widgets_mode = get_theme_mod( 'widgets_mode', 0 );
+			$widgets_mode = Kirki::get_option( 'widgets_mode', 0 );
 
 			if ( 0 == $widgets_mode ) {
 				return '<div class="panel-heading">';
@@ -578,7 +578,7 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 		 */
 		function widgets_after_title() {
 
-			$widgets_mode = get_theme_mod( 'widgets_mode', 0 );
+			$widgets_mode = Kirki::get_option( 'widgets_mode', 0 );
 
 			if ( 0 == $widgets_mode ) {
 				return '</div><div class="panel-body">';
@@ -599,7 +599,7 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 			/**
 			 * BACKGROUND
 			 */
-			$body_bg = '#' . str_replace( '#', '', Shoestrap_Color::sanitize_hex( get_theme_mod( 'body_bg_color', '#ffffff' ) ) );
+			$body_bg = '#' . str_replace( '#', '', Shoestrap_Color::sanitize_hex( Kirki::get_option( 'body_bg_color', '#ffffff' ) ) );
 
 			// Calculate the gray shadows based on the body background.
 			// We basically create 2 "presets": light and dark.
@@ -723,13 +723,13 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 			/**
 			 * LAYOUT
 			 */
-			$screen_sm = filter_var( get_theme_mod( 'screen_tablet', 768 ), FILTER_SANITIZE_NUMBER_INT );
-			$screen_md = filter_var( get_theme_mod( 'screen_desktop', 992 ), FILTER_SANITIZE_NUMBER_INT );
-			$screen_lg = filter_var( get_theme_mod( 'screen_large_desktop', 1200 ), FILTER_SANITIZE_NUMBER_INT );
-			$gutter    = filter_var( get_theme_mod( 'gutter', 30 ), FILTER_SANITIZE_NUMBER_INT );
+			$screen_sm = filter_var( Kirki::get_option( 'screen_tablet', 768 ), FILTER_SANITIZE_NUMBER_INT );
+			$screen_md = filter_var( Kirki::get_option( 'screen_desktop', 992 ), FILTER_SANITIZE_NUMBER_INT );
+			$screen_lg = filter_var( Kirki::get_option( 'screen_large_desktop', 1200 ), FILTER_SANITIZE_NUMBER_INT );
+			$gutter    = filter_var( Kirki::get_option( 'gutter', 30 ), FILTER_SANITIZE_NUMBER_INT );
 			$gutter    = ( $gutter < 2 ) ? 2 : $gutter;
 
-			$site_style = get_theme_mod( 'site_style', 'wide' );
+			$site_style = Kirki::get_option( 'site_style', 'wide' );
 
 			$screen_xs = ( $site_style == 'static' ) ? '50px' : '480px';
 			$screen_sm = ( $site_style == 'static' ) ? '50px' : $screen_sm;
@@ -765,11 +765,11 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 			/**
 			 * BRANDING
 			 */
-			$brand_primary = '#' . str_replace( '#', '', Shoestrap_Color::sanitize_hex( get_theme_mod( 'color_brand_primary', '#428bca' ) ) );
-			$brand_success = '#' . str_replace( '#', '', Shoestrap_Color::sanitize_hex( get_theme_mod( 'color_brand_success', '#5cb85c' ) ) );
-			$brand_warning = '#' . str_replace( '#', '', Shoestrap_Color::sanitize_hex( get_theme_mod( 'color_brand_warning', '#f0ad4e' ) ) );
-			$brand_danger  = '#' . str_replace( '#', '', Shoestrap_Color::sanitize_hex( get_theme_mod( 'color_brand_danger', '#d9534f' ) ) );
-			$brand_info    = '#' . str_replace( '#', '', Shoestrap_Color::sanitize_hex( get_theme_mod( 'color_brand_info', '#5bc0de' ) ) );
+			$brand_primary = '#' . str_replace( '#', '', Shoestrap_Color::sanitize_hex( Kirki::get_option( 'color_brand_primary', '#428bca' ) ) );
+			$brand_success = '#' . str_replace( '#', '', Shoestrap_Color::sanitize_hex( Kirki::get_option( 'color_brand_success', '#5cb85c' ) ) );
+			$brand_warning = '#' . str_replace( '#', '', Shoestrap_Color::sanitize_hex( Kirki::get_option( 'color_brand_warning', '#f0ad4e' ) ) );
+			$brand_danger  = '#' . str_replace( '#', '', Shoestrap_Color::sanitize_hex( Kirki::get_option( 'color_brand_danger', '#d9534f' ) ) );
+			$brand_info    = '#' . str_replace( '#', '', Shoestrap_Color::sanitize_hex( Kirki::get_option( 'color_brand_info', '#5bc0de' ) ) );
 
 			$link_hover_color = ( Shoestrap_Color::get_brightness( $brand_primary ) > 50 ) ? 'darken(@link-color, 15%)' : 'lighten(@link-color, 15%)';
 
@@ -832,9 +832,9 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 			$variables .= '@state-danger-text:  mix(@gray-darker, @brand-danger, 20%);';
 			$variables .= '@state-danger-bg:    mix(@body-bg, @brand-danger, 50%);';
 
-			$padding_base  = intval( get_theme_mod( 'padding_base', 8 ) );
+			$padding_base  = intval( Kirki::get_option( 'padding_base', 8 ) );
 
-			$border_radius = filter_var( get_theme_mod( 'border_radius', 4 ), FILTER_SANITIZE_NUMBER_INT );
+			$border_radius = filter_var( Kirki::get_option( 'border_radius', 4 ), FILTER_SANITIZE_NUMBER_INT );
 			$border_radius = ( strlen( $border_radius ) < 1 ) ? 0 : $border_radius;
 
 			$variables .= '@padding-base-vertical:    ' . round( $padding_base * 6 / 6 ) . 'px;';
@@ -869,14 +869,14 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 			/**
 			 * MENUS
 			 */
-			$font_navbar       = get_theme_mod( 'font_menus_font_family', '"Helvetica Neue", Helvetica, Arial, sans-serif' );
+			$font_navbar       = Kirki::get_option( 'font_menus_font_family', '"Helvetica Neue", Helvetica, Arial, sans-serif' );
 			$font_brand        = $font_navbar;
-			$navbar_bg         = '#' . str_replace( '#', '', Shoestrap_Color::sanitize_hex( get_theme_mod( 'navbar_bg', '#f8f8f8' ) ) );
-			$navbar_height     = filter_var( get_theme_mod( 'navbar_height', 50 ), FILTER_SANITIZE_NUMBER_INT );
-			$navbar_text_color = '#' . str_replace( '#', '', get_theme_mod( 'font_menus_color', '#333333' ) );
+			$navbar_bg         = '#' . str_replace( '#', '', Shoestrap_Color::sanitize_hex( Kirki::get_option( 'navbar_bg', '#f8f8f8' ) ) );
+			$navbar_height     = filter_var( Kirki::get_option( 'navbar_height', 50 ), FILTER_SANITIZE_NUMBER_INT );
+			$navbar_text_color = '#' . str_replace( '#', '', Kirki::get_option( 'font_menus_color', '#333333' ) );
 			$brand_text_color  = $navbar_text_color;
 			$navbar_border     = ( Shoestrap_Color::get_brightness( $navbar_bg ) < 50 ) ? 'lighten(@navbar-default-bg, 6.5%)' : 'darken(@navbar-default-bg, 6.5%)';
-			$gfb = get_theme_mod( 'grid_float_breakpoint', 'screen_sm_min' );
+			$gfb = Kirki::get_option( 'grid_float_breakpoint', 'screen_sm_min' );
 
 			if ( Shoestrap_Color::get_brightness( $navbar_bg ) < 165 ) {
 				$navbar_link_hover_color    = 'darken(@navbar-default-color, 26.5%)';
@@ -922,7 +922,7 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 
 			$variables .= '@grid-float-breakpoint: ' . $grid_float_breakpoint . ';';
 
-			if ( get_theme_mod( 'gradients_toggle', 0 ) ) {
+			if ( Kirki::get_option( 'gradients_toggle', 0 ) ) {
 				$variables .= '@import "' . SS_FRAMEWORK_PATH . '/assets/less/gradients.less";';
 			}
 
@@ -935,17 +935,17 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 		function typography_css( $style ) {
 
 			// Base font settings
-			$font_base_family    = get_theme_mod( 'font_base_family', '"Helvetica Neue", Helvetica, Arial, sans-serif' );
-			$font_base_google    = get_theme_mod( 'font_base_google', 0 );
-			$font_base_color     = get_theme_mod( 'font_base_color', '#333333' );
-			$font_base_weight    = get_theme_mod( 'font_base_weight', '#333333' );
-			$font_base_size      = get_theme_mod( 'font_base_size', ( 'px' == get_theme_mod( 'font_size_units', 'px' ) ) ? 14 : 1.5 );
-			$font_base_height    = get_theme_mod( 'font_base_height', 1.4 );
+			$font_base_family    = Kirki::get_option( 'font_base_family', '"Helvetica Neue", Helvetica, Arial, sans-serif' );
+			$font_base_google    = Kirki::get_option( 'font_base_google', 0 );
+			$font_base_color     = Kirki::get_option( 'font_base_color', '#333333' );
+			$font_base_weight    = Kirki::get_option( 'font_base_weight', '#333333' );
+			$font_base_size      = Kirki::get_option( 'font_base_size', ( 'px' == Kirki::get_option( 'font_size_units', 'px' ) ) ? 14 : 1.5 );
+			$font_base_height    = Kirki::get_option( 'font_base_height', 1.4 );
 
-			$style .= 'body {font-family:' . $font_base_family . ';color:' . $font_base_color . ';font-weight:' . $font_base_weight . ';font-size:' . $font_base_size . get_theme_mod( 'font_size_units', 'px' ) . ';line-height:' . $font_base_height . ';}';
+			$style .= 'body {font-family:' . $font_base_family . ';color:' . $font_base_color . ';font-weight:' . $font_base_weight . ';font-size:' . $font_base_size . Kirki::get_option( 'font_size_units', 'px' ) . ';line-height:' . $font_base_height . ';}';
 
 			// Headers font
-			$headers_font_family = get_theme_mod( 'headers_font_family', '"Helvetica Neue", Helvetica, Arial, sans-serif' );
+			$headers_font_family = Kirki::get_option( 'headers_font_family', '"Helvetica Neue", Helvetica, Arial, sans-serif' );
 			$style .= 'h1,.h1,h2,.h2,h3,.h3,h4,.h4,h5,.h5,h6,.h6{font-family:' . $headers_font_family . ';}';
 
 			$headers = array(
@@ -958,10 +958,10 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 			);
 
 			foreach ( $headers as $header => $values ) {
-				$header_color  = get_theme_mod( 'font_' . $header . '_color', '#333333' );
-				$header_weight = get_theme_mod( 'font_' . $header . '_weight', 400 );
-				$header_size   = get_theme_mod( 'font_' . $header . '_size', $values['size'] );
-				$header_height = get_theme_mod( 'font_' . $header . '_height', $values['height'] );
+				$header_color  = Kirki::get_option( 'font_' . $header . '_color', '#333333' );
+				$header_weight = Kirki::get_option( 'font_' . $header . '_weight', 400 );
+				$header_size   = Kirki::get_option( 'font_' . $header . '_size', $values['size'] );
+				$header_height = Kirki::get_option( 'font_' . $header . '_height', $values['height'] );
 
 				$style .= $header . ', .' . $header . ' {color:' . $header_color . ';font-weight: ' . $header_weight . ';font-size: ' . $header_size . '%;line-height: ' . $header_height . ';}';
 			}
@@ -976,13 +976,13 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 		*/
 		function google_font() {
 
-			$font_base_google    = get_theme_mod( 'font_base_google', 0 );
-			$font_headers_google = get_theme_mod( 'headers_font_google', 0 );
+			$font_base_google    = Kirki::get_option( 'font_base_google', 0 );
+			$font_headers_google = Kirki::get_option( 'headers_font_google', 0 );
 
 			if ( $font_base_google == 1 ) {
 
-				$font_base_family = str_replace( ' ', '+', get_theme_mod( 'font_base_family', '"Helvetica Neue", Helvetica, Arial, sans-serif' ) );
-				$font_base_google_subsets = get_theme_mod( 'font_base_google_subsets', 'latin' );
+				$font_base_family = str_replace( ' ', '+', Kirki::get_option( 'font_base_family', '"Helvetica Neue", Helvetica, Arial, sans-serif' ) );
+				$font_base_google_subsets = Kirki::get_option( 'font_base_google_subsets', 'latin' );
 
 				wp_register_style( 'shoestrap_base_google_font', 'http://fonts.googleapis.com/css?family=' . $font_base_family . '&subset=' . $font_base_google_subsets );
 		 		wp_enqueue_style( 'shoestrap_base_google_font' );
@@ -992,8 +992,8 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 
 			if ( $font_headers_google == 1 ) {
 
-				$font_headers_family = str_replace( ' ', '+', get_theme_mod( 'headers_font_family', '"Helvetica Neue", Helvetica, Arial, sans-serif' ) );
-				$font_headers_google_subsets = get_theme_mod( 'font_headers_google_subsets', 'latin' );
+				$font_headers_family = str_replace( ' ', '+', Kirki::get_option( 'headers_font_family', '"Helvetica Neue", Helvetica, Arial, sans-serif' ) );
+				$font_headers_google_subsets = Kirki::get_option( 'font_headers_google_subsets', 'latin' );
 
 				wp_register_style( 'shoestrap_headers_google_font', 'http://fonts.googleapis.com/css?family='.$font_headers_family.'&subset='.$font_headers_google_subsets );
 		 		wp_enqueue_style( 'shoestrap_headers_google_font' );
@@ -1009,7 +1009,7 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 		 */
 		function logo( $fallback ) {
 
-			$logo = get_theme_mod( 'logo', '' );
+			$logo = Kirki::get_option( 'logo', '' );
 
 			if ( $logo ) {
 				return '<img id="site-logo" src="' . $logo . '" alt="' . get_bloginfo( 'name' ) .'">';
@@ -1026,7 +1026,7 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 		function navbar_logo() {
 
 			// If we've selected NOT to display the logo on navbars, then do not proceed.
-			if ( 1 != get_theme_mod( 'navbar_logo', 1 ) ) {
+			if ( 1 != Kirki::get_option( 'navbar_logo', 1 ) ) {
 				return;
 			}
 
@@ -1045,7 +1045,7 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 			$col = 'col-md-';
 
 			// Get the layout we're using (sidebar arrangement).
-			$layout = get_theme_mod( 'layout', 1 );
+			$layout = Kirki::get_option( 'layout', 1 );
 
 			// Apply a filter to the layout.
 			// Allows us to bypass the selected layout using a simple filter like this:
@@ -1055,11 +1055,11 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 			$layout = apply_filters( 'shoestrap/layout/modifier', $layout );
 
 			// Get the site style. Defaults to 'Wide'.
-			$site_mode = get_theme_mod( 'site_style', 'wide' );
+			$site_mode = Kirki::get_option( 'site_style', 'wide' );
 
 			// Get the sidebar widths
-			$width_one = ( ! is_active_sidebar( 'sidebar_primary' ) )   ? null : get_theme_mod( 'layout_primary_width', 4 );
-			$width_two = ( ! is_active_sidebar( 'sidebar_secondary' ) ) ? null : get_theme_mod( 'layout_secondary_width', 3 );
+			$width_one = ( ! is_active_sidebar( 'sidebar_primary' ) )   ? null : Kirki::get_option( 'layout_primary_width', 4 );
+			$width_two = ( ! is_active_sidebar( 'sidebar_secondary' ) ) ? null : Kirki::get_option( 'layout_secondary_width', 3 );
 
 			// If the selected layout is no sidebars, then disregard the primary sidebar width.
 			$width_one = ( 0 == $layout ) ? null : $width_one;
@@ -1164,10 +1164,10 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 		 */
 		function sidebars_bypass() {
 
-			$layout = get_theme_mod( 'layout', 1 );
+			$layout = Kirki::get_option( 'layout', 1 );
 			$layout = apply_filters( 'shoestrap/layout/modifier', $layout );
 
-			$sidebars_on_front = get_theme_mod( 'layout_sidebar_on_front', 0 );
+			$sidebars_on_front = Kirki::get_option( 'layout_sidebar_on_front', 0 );
 
 			// If the layout does not contain 2 sidebars, do not render the secondary sidebar
 			if ( ! in_array( $layout, array( 3, 4, 5 ) ) ) {
@@ -1182,14 +1182,14 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 
 			// Have we selected custom layouts per post type?
 			// if yes, then make sure the layout used for post types is the custom selected one.
-			if ( 1 == get_theme_mod( 'cpt_layout_toggle', 0 ) ) {
+			if ( 1 == Kirki::get_option( 'cpt_layout_toggle', 0 ) ) {
 
 				$post_types = get_post_types( array( 'public' => true ), 'names' );
 
 				foreach ( $post_types as $post_type ) {
 
 					if ( is_singular( $post_type ) ) {
-						$layout = get_theme_mod( $post_type . '_layout', get_theme_mod( 'layout', 1 ) );
+						$layout = Kirki::get_option( $post_type . '_layout', Kirki::get_option( 'layout', 1 ) );
 						add_filter( 'shoestrap/layout/modifier', 'shoestrap_return_' . $layout );
 					}
 
@@ -1207,9 +1207,9 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 		 */
 		function container_class_modifier() {
 
-			$nav_style  = get_theme_mod( 'navbar_toggle', 'normal' );
-			$site_style = ( 'left' != $nav_style ) ? get_theme_mod( 'site_style', 'wide' ) : 'fluid';
-			$breakpoint = get_theme_mod( 'grid_float_breakpoint', 'screen_sm_min' );
+			$nav_style  = Kirki::get_option( 'navbar_toggle', 'normal' );
+			$site_style = ( 'left' != $nav_style ) ? Kirki::get_option( 'site_style', 'wide' ) : 'fluid';
+			$breakpoint = Kirki::get_option( 'grid_float_breakpoint', 'screen_sm_min' );
 
 			if ( 'fluid' == $site_style ) {
 
@@ -1243,7 +1243,7 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 		 */
 		function return_nav_left_class() {
 
-			$cols = get_theme_mod( 'layout_secondary_width', 3 );
+			$cols = Kirki::get_option( 'layout_secondary_width', 3 );
 			return 'col-sm-' . $cols;
 
 		}
@@ -1253,7 +1253,7 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 		 */
 		function left_wrapper_open_right() {
 
-			$cols = 12 - get_theme_mod( 'layout_secondary_width', 3 );
+			$cols = 12 - Kirki::get_option( 'layout_secondary_width', 3 );
 
 			echo '<div class="right-wrapper col-sm-' . $cols . '">';
 
@@ -1282,8 +1282,8 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 		 */
 		function body_class( $classes ) {
 
-			$site_style = get_theme_mod( 'site_style', 'wide' );
-			if ( 'left' == get_theme_mod( 'menu_mode' ) ) {
+			$site_style = Kirki::get_option( 'site_style', 'wide' );
+			if ( 'left' == Kirki::get_option( 'menu_mode' ) ) {
 				$site_style = 'fluid';
 			}
 
@@ -1292,7 +1292,7 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 				$classes[] = 'boxed';
 			}
 
-			$navbar_position = get_theme_mod( 'navbar_position', 'normal' );
+			$navbar_position = Kirki::get_option( 'navbar_position', 'normal' );
 			$classes[] = 'body-nav-' . $navbar_position;
 
 			return $classes;
@@ -1306,8 +1306,8 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 
 			global $wp_customize;
 
-			$body_margin_top    = get_theme_mod( 'body_margin_top', 0 );
-			$body_margin_bottom = get_theme_mod( 'body_margin_bottom', 0 );
+			$body_margin_top    = Kirki::get_option( 'body_margin_top', 0 );
+			$body_margin_bottom = Kirki::get_option( 'body_margin_bottom', 0 );
 
 			if ( 0 != $body_margin_top ) {
 				$style .= 'html body.bootstrap { margin-top: ' . $body_margin_top . 'px !important; }';
@@ -1320,10 +1320,10 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 			// Customizer-only styles
 			if ( $wp_customize ) {
 
-				$screen_sm = filter_var( get_theme_mod( 'screen_tablet', 768 ), FILTER_SANITIZE_NUMBER_INT );
-				$screen_md = filter_var( get_theme_mod( 'screen_desktop', 992 ), FILTER_SANITIZE_NUMBER_INT );
-				$screen_lg = filter_var( get_theme_mod( 'screen_large_desktop', 1200 ), FILTER_SANITIZE_NUMBER_INT );
-				$gutter    = filter_var( get_theme_mod( 'gutter', 30 ), FILTER_SANITIZE_NUMBER_INT );
+				$screen_sm = filter_var( Kirki::get_option( 'screen_tablet', 768 ), FILTER_SANITIZE_NUMBER_INT );
+				$screen_md = filter_var( Kirki::get_option( 'screen_desktop', 992 ), FILTER_SANITIZE_NUMBER_INT );
+				$screen_lg = filter_var( Kirki::get_option( 'screen_large_desktop', 1200 ), FILTER_SANITIZE_NUMBER_INT );
+				$gutter    = filter_var( Kirki::get_option( 'gutter', 30 ), FILTER_SANITIZE_NUMBER_INT );
 
 				$style .= '
 				.container {
@@ -1370,7 +1370,7 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 		 */
 		function navbar_positioning_class( $classes ) {
 
-			$position = get_theme_mod( 'navbar_position', 'normal' );
+			$position = Kirki::get_option( 'navbar_position', 'normal' );
 
 			$classes .= ( 'fixed-top' == $position || 'fixed-bottom' == $position ) ? ' navbar-' . $position : ' navbar-static-top';
 
@@ -1385,9 +1385,9 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 		 */
 		function jumbotron_html() {
 
-			$site_style   = get_theme_mod( 'site_style', 'wide' );
-			$visibility   = get_theme_mod( 'jumbotron_visibility', 1 );
-			$nocontainer  = get_theme_mod( 'jumbotron_nocontainer', 0 );
+			$site_style   = Kirki::get_option( 'site_style', 'wide' );
+			$visibility   = Kirki::get_option( 'jumbotron_visibility', 1 );
+			$nocontainer  = Kirki::get_option( 'jumbotron_nocontainer', 0 );
 
 			$hero = ( ( ( 1 == $visibility && is_front_page() ) || 1 != $visibility ) && is_active_sidebar( 'jumbotron' ) ) ? true : false;
 
@@ -1426,10 +1426,10 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 		 */
 		function jumbotron_css( $styles ) {
 
-			$center = get_theme_mod( 'jumbotron_center', 0 );
-			$thickness = get_theme_mod( 'jumbotron_border_bottom_thickness', 0 );
-			$style     = get_theme_mod( 'jumbotron_border_bottom_style', 'none');
-			$color     = get_theme_mod( 'jumbotron_border_bottom_color', '#eeeeee' );
+			$center = Kirki::get_option( 'jumbotron_center', 0 );
+			$thickness = Kirki::get_option( 'jumbotron_border_bottom_thickness', 0 );
+			$style     = Kirki::get_option( 'jumbotron_border_bottom_style', 'none');
+			$color     = Kirki::get_option( 'jumbotron_border_bottom_color', '#eeeeee' );
 
 			if ( 0 != $center && 0 != $thickness ) {
 
@@ -1457,8 +1457,8 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 		 */
 		function fittext_init() {
 
-			$fittext_toggle   = get_theme_mod( 'jumbotron_title_fit', 0 );
-			$jumbo_visibility = get_theme_mod( 'jumbotron_visibility', 1 );
+			$fittext_toggle   = Kirki::get_option( 'jumbotron_title_fit', 0 );
+			$jumbo_visibility = Kirki::get_option( 'jumbotron_visibility', 1 );
 
 			// Should only show on the front page if it's enabled, or site-wide when appropriate
 			if ( 1 == $fittext_toggle && ( 0 == $jumbo_visibility || ( 1 == $jumbo_visibility && is_front_page() ) ) ) {
@@ -1475,8 +1475,8 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 		 */
 		function fittext_enqueue() {
 
-			$fittext_toggle   = get_theme_mod( 'jumbotron_title_fit', 0 );
-			$jumbo_visibility = get_theme_mod( 'jumbotron_visibility', 1 );
+			$fittext_toggle   = Kirki::get_option( 'jumbotron_title_fit', 0 );
+			$jumbo_visibility = Kirki::get_option( 'jumbotron_visibility', 1 );
 
 			if ( 1 == $fittext_toggle && ( 0 == $jumbo_visibility || ( 1 == $jumbo_visibility && is_front_page() ) ) ) {
 
@@ -1493,36 +1493,36 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 		 */
 		function header_html() { ?>
 
-			<?php if ( 1 == get_theme_mod( 'header_toggle', 0 ) ) : ?>
+			<?php if ( 1 == Kirki::get_option( 'header_toggle', 0 ) ) : ?>
 
 				<header class="page-header">
 
-					<?php if ( 'boxed' == get_theme_mod( 'site_style', 'wide' ) ) : ?>
+					<?php if ( 'boxed' == Kirki::get_option( 'site_style', 'wide' ) ) : ?>
 						<div class="container header-boxed">
 					<?php endif; ?>
 
 						<div class="header-wrapper container-fluid">
 
-							<?php if ( 'wide' == get_theme_mod( 'site_style', 'wide' ) ) : ?>
+							<?php if ( 'wide' == Kirki::get_option( 'site_style', 'wide' ) ) : ?>
 								<div class="container">
 							<?php endif; ?>
 
-								<?php if ( 1 == get_theme_mod( 'header_branding', 1 ) ) : ?>
+								<?php if ( 1 == Kirki::get_option( 'header_branding', 1 ) ) : ?>
 									<?php $extra_class = ( is_active_sidebar( 'header_area' ) ) ? ' col-md-6' : null; ?>
 									<a class="brand-logo<?php echo $extra_class; ?>" href="<?php echo home_url(); ?>"><h1><?php echo $this->logo( get_bloginfo( 'name' ) ); ?></h1></a>
 								<?php endif; ?>
 
-								<?php $extra_class = ( 1 == get_theme_mod( 'header_branding', 1 ) ) ? ' col-md-6' : null; ?>
+								<?php $extra_class = ( 1 == Kirki::get_option( 'header_branding', 1 ) ) ? ' col-md-6' : null; ?>
 
 								<div class="header-widgets<?php echo $extra_class; ?>"><?php dynamic_sidebar( 'header_area' ); ?></div>
 
-							<?php if ( 'wide' == get_theme_mod( 'site_style', 'wide' ) ) : ?>
+							<?php if ( 'wide' == Kirki::get_option( 'site_style', 'wide' ) ) : ?>
 								</div>
 							<?php endif; ?>
 
 						</div>
 
-					<?php if ( 'boxed' == get_theme_mod( 'site_style', 'wide' ) ) : ?>
+					<?php if ( 'boxed' == Kirki::get_option( 'site_style', 'wide' ) ) : ?>
 						</div>
 					<?php endif; ?>
 
@@ -1538,9 +1538,9 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 		 */
 		function header_css( $styles ) {
 
-			if ( 1 == get_theme_mod( 'header_toggle', 0 ) ) {
+			if ( 1 == Kirki::get_option( 'header_toggle', 0 ) ) {
 
-				$element = ( 'boxed' == get_theme_mod( 'site_style', 'wide' ) ) ? 'body .header-boxed' : 'body .header-wrapper';
+				$element = ( 'boxed' == Kirki::get_option( 'site_style', 'wide' ) ) ? 'body .header-boxed' : 'body .header-wrapper';
 
 				$styles .= $element . ',';
 				$styles .= $element . ' a,';
@@ -1549,10 +1549,10 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 				$styles .= $element . ' h3,';
 				$styles .= $element . ' h4,';
 				$styles .= $element . ' h5,';
-				$styles .= $element . ' h6{ color:' . get_theme_mod( 'header_color', '#333333') . ';}';
+				$styles .= $element . ' h6{ color:' . Kirki::get_option( 'header_color', '#333333') . ';}';
 
-				$styles .= ( 0 < get_theme_mod( 'header_margin_top', 0 ) ) ? $element . '{margin-top:' . get_theme_mod( 'header_margin_top', 0 ) . 'px;}' : null;
-				$styles .= ( 0 < get_theme_mod( 'header_margin_bottom', 0 ) ) ? $element . '{margin-bottom:' . get_theme_mod( 'header_margin_bottom', 0 ) . 'px;}' : null;
+				$styles .= ( 0 < Kirki::get_option( 'header_margin_top', 0 ) ) ? $element . '{margin-top:' . Kirki::get_option( 'header_margin_top', 0 ) . 'px;}' : null;
+				$styles .= ( 0 < Kirki::get_option( 'header_margin_bottom', 0 ) ) ? $element . '{margin-bottom:' . Kirki::get_option( 'header_margin_bottom', 0 ) . 'px;}' : null;
 
 			}
 
@@ -1615,11 +1615,11 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 				return $style;
 			}
 
-			$brand_primary = '#' . str_replace( '#', '', Shoestrap_Color::sanitize_hex( get_theme_mod( 'color_brand_primary', '#428bca' ) ) );
-			$brand_success = '#' . str_replace( '#', '', Shoestrap_Color::sanitize_hex( get_theme_mod( 'color_brand_success', '#5cb85c' ) ) );
-			$brand_warning = '#' . str_replace( '#', '', Shoestrap_Color::sanitize_hex( get_theme_mod( 'color_brand_warning', '#f0ad4e' ) ) );
-			$brand_danger  = '#' . str_replace( '#', '', Shoestrap_Color::sanitize_hex( get_theme_mod( 'color_brand_danger', '#d9534f' ) ) );
-			$brand_info    = '#' . str_replace( '#', '', Shoestrap_Color::sanitize_hex( get_theme_mod( 'color_brand_info', '#5bc0de' ) ) );
+			$brand_primary = '#' . str_replace( '#', '', Shoestrap_Color::sanitize_hex( Kirki::get_option( 'color_brand_primary', '#428bca' ) ) );
+			$brand_success = '#' . str_replace( '#', '', Shoestrap_Color::sanitize_hex( Kirki::get_option( 'color_brand_success', '#5cb85c' ) ) );
+			$brand_warning = '#' . str_replace( '#', '', Shoestrap_Color::sanitize_hex( Kirki::get_option( 'color_brand_warning', '#f0ad4e' ) ) );
+			$brand_danger  = '#' . str_replace( '#', '', Shoestrap_Color::sanitize_hex( Kirki::get_option( 'color_brand_danger', '#d9534f' ) ) );
+			$brand_info    = '#' . str_replace( '#', '', Shoestrap_Color::sanitize_hex( Kirki::get_option( 'color_brand_info', '#5bc0de' ) ) );
 
 			$style .= 'a { color: ' . $brand_primary . '; }';
 			$style .= '.text-primary { color: ' . $brand_primary . '; }';
@@ -1660,7 +1660,7 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 		 */
 		function breadcrumbs() {
 
-			$breadcrumbs = get_theme_mod( 'breadcrumbs', 0 );
+			$breadcrumbs = Kirki::get_option( 'breadcrumbs', 0 );
 
 			if ( 0 != $breadcrumbs && ! is_home() && ! is_front_page() ) {
 
@@ -1692,7 +1692,7 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 		 */
 		function excerpt_length() {
 
-			return get_theme_mod( 'post_excerpt_length', 55 );
+			return Kirki::get_option( 'post_excerpt_length', 55 );
 
 		}
 
@@ -1702,7 +1702,7 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 		 */
 		function excerpt_more( $more, $post_id ) {
 
-			$continue_text = get_theme_mod( 'post_excerpt_link_text', 'Continued' );
+			$continue_text = Kirki::get_option( 'post_excerpt_link_text', 'Continued' );
 			return ' &hellip; <a href="' . get_permalink( $post_id ) . '">' . $continue_text . '</a>';
 
 		}
@@ -1717,13 +1717,13 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 			global $post;
 
 			$current_post_type = get_post_type( $post );
-			$images_ppt        = get_theme_mod( 'feat_img_per_post_type', '' );
+			$images_ppt        = Kirki::get_option( 'feat_img_per_post_type', '' );
 
 			// Get the array of disabled featured images per post type
 			$disabled = ( '' != $images_ppt ) ? explode( ',', $images_ppt ) : '';
 
 			// Get the default switch values for singulars and archives
-			$default = ( is_singular() ) ? get_theme_mod( 'feat_img_post', 0 ) : get_theme_mod( 'feat_img_archive', 0 );
+			$default = ( is_singular() ) ? Kirki::get_option( 'feat_img_post', 0 ) : Kirki::get_option( 'feat_img_archive', 0 );
 
 			// If the current post type exists in our array of disabled post types, then set its displaying to false
 			if ( $disabled ) {
@@ -1768,12 +1768,12 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 			$content = $before;
 
 			foreach ( $social_links as $social_link => $label ) {
-				$link = get_theme_mod( $social_link . '_link', '' );
+				$link = Kirki::get_option( $social_link . '_link', '' );
 
 				if ( '' != esc_url( $link ) ) {
 					$content .= '<a role="link" aria-labelledby="' . $label . '" href="' . $link . '" target="_blank" title="' . $label . '"><i class="el-icon-' . $social_link . '"></i>';
 
-					if ( 'dropdown' == get_theme_mod( 'navbar_social', 'off' ) ) {
+					if ( 'dropdown' == Kirki::get_option( 'navbar_social', 'off' ) ) {
 						$content .= '&nbsp;'.$label;
 					}
 					$content .= '</a>';
@@ -1794,7 +1794,7 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 
 			$content = $before = $after = $separator = '';
 
-			$social_mode = get_theme_mod( 'navbar_social', 'off' );
+			$social_mode = Kirki::get_option( 'navbar_social', 'off' );
 
 			if ( 'inline' == $social_mode ) {
 
@@ -1822,7 +1822,7 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 		 */
 		function navbar_links_alignment( $classes ) {
 
-			$align = get_theme_mod( 'navbar_nav_align', 'left' );
+			$align = Kirki::get_option( 'navbar_nav_align', 'left' );
 
 			if ( 'center' == $align ) {
 				$classes .= ' navbar-center';
@@ -1838,7 +1838,7 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 		 */
 		function get_social_shares() {
 
-			$nets   = explode(',', get_theme_mod( 'share_networks' ) );
+			$nets   = explode(',', Kirki::get_option( 'share_networks' ) );
 
 			$networks = null;
 
@@ -1925,7 +1925,7 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 		 */
 		function get_tw_username() {
 			$twittername  = '';
-			$twitter_link = get_theme_mod( 'twitter_link' );
+			$twitter_link = Kirki::get_option( 'twitter_link' );
 
 			if ( $twitter_link != "" ) {
 				$twitter_link = explode( '/', rtrim( $twitter_link, '/' ) );
@@ -1947,10 +1947,10 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 			$show = false;
 
 			// Button class
-			$button_color = get_theme_mod('social_sharing_button_class', 'default' );
+			$button_color = Kirki::get_option('social_sharing_button_class', 'default' );
 
 			// Button Text
-			$text = get_theme_mod('social_sharing_text');
+			$text = Kirki::get_option('social_sharing_text');
 
 			// Build the content
 			$content  = '<div class="btn-group btn-group-sm social-share">';
@@ -1977,7 +1977,7 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 		 * Include the custom CSS
 		 */
 		function custom_css() {
-			$css = get_theme_mod( 'css', '' );
+			$css = Kirki::get_option( 'css', '' );
 
 			if ( ! empty( $css ) ) {
 				wp_add_inline_style( 'shoestrap', $css );

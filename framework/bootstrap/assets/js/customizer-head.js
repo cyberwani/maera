@@ -1,7 +1,9 @@
-var less = {
-    env: "development",
-    watchMode: true
-};
+jQuery(document).ready(function($) {
+	var less = {
+	    env: "development",
+	    watchMode: true
+	};
 
-var kirki = {};
-//var kirki = {'configs': jQuery.parseJSON(kirki.configs)};
+	var kirki = {};
+	//var kirki = {'configs': jQuery.parseJSON(kirki.configs)};
+});

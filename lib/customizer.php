@@ -17,6 +17,9 @@ function shoestrap_customizer_config() {
 		'url_path'      => get_template_directory_uri() . '/lib/kirki/',
 		'stylesheet_id' => 'shoestrap',
 		// 'live_css'      => false,
+		// 'option_mode'   => 'theme_mod',
+		'option_mode'   => 'option',
+		'option_name'   => 'shoestrap'
 
 	);
 

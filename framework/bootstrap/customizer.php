@@ -379,11 +379,11 @@ function shoestrap_customizer_settings( $controls ) {
 		'default'  => 0,
 	);
 
-	if ( 1 == get_theme_mod( 'cpt_layout_toggle', 0 ) ) {
+	if ( 1 == Kirki::get_option( 'cpt_layout_toggle', 0 ) ) {
 
 		$post_types = get_post_types( array( 'public' => true ), 'names' );
 
-		$layout = get_theme_mod( 'layout', 1 );
+		$layout = Kirki::get_option( 'layout', 1 );
 
 		foreach ( $post_types as $post_type ) {
 			$controls[] = array(
@@ -625,12 +625,12 @@ function shoestrap_customizer_settings( $controls ) {
 		'setting'  => 'font_menus_size',
 		'subtitle' => __( 'Font Size', 'shoestrap' ),
 		'section'  => 'nav',
-		'default'  => ( 'px' == get_theme_mod( 'font_size_units', 'px' ) ) ? 14 : 1.5,
+		'default'  => ( 'px' == Kirki::get_option( 'font_size_units', 'px' ) ) ? 14 : 1.5,
 		'priority' => 44,
 		'choices'  => array(
-			'min'  => ( 'px' == get_theme_mod( 'font_size_units', 'px' ) ) ? 7 : 0.1,
-			'max'  => ( 'px' == get_theme_mod( 'font_size_units', 'px' ) ) ? 70 : 7,
-			'step' => ( 'px' == get_theme_mod( 'font_size_units', 'px' ) ) ? 1 : 0.01,
+			'min'  => ( 'px' == Kirki::get_option( 'font_size_units', 'px' ) ) ? 7 : 0.1,
+			'max'  => ( 'px' == Kirki::get_option( 'font_size_units', 'px' ) ) ? 70 : 7,
+			'step' => ( 'px' == Kirki::get_option( 'font_size_units', 'px' ) ) ? 1 : 0.01,
 		),
 	);
 
@@ -893,12 +893,12 @@ function shoestrap_customizer_settings( $controls ) {
 		'setting'  => 'font_base_size',
 		'label'    => __( 'Base Font Size', 'shoestrap' ),
 		'section'  => 'typ_size',
-		'default'  => ( 'px' == get_theme_mod( 'font_size_units', 'px' ) ) ? 14 : 1.5,
+		'default'  => ( 'px' == Kirki::get_option( 'font_size_units', 'px' ) ) ? 14 : 1.5,
 		'priority' => 25,
 		'choices'  => array(
-			'min'  => ( 'px' == get_theme_mod( 'font_size_units', 'px' ) ) ? 7 : 0.1,
-			'max'  => ( 'px' == get_theme_mod( 'font_size_units', 'px' ) ) ? 70 : 7,
-			'step' => ( 'px' == get_theme_mod( 'font_size_units', 'px' ) ) ? 1 : 0.01,
+			'min'  => ( 'px' == Kirki::get_option( 'font_size_units', 'px' ) ) ? 7 : 0.1,
+			'max'  => ( 'px' == Kirki::get_option( 'font_size_units', 'px' ) ) ? 70 : 7,
+			'step' => ( 'px' == Kirki::get_option( 'font_size_units', 'px' ) ) ? 1 : 0.01,
 		),
 	);
 
@@ -1134,7 +1134,7 @@ function shoestrap_customizer_settings( $controls ) {
 		'default'  => 550,
 		'choices'  => array(
 			'min'  => -1,
-			'max'  => get_theme_mod( 'screen_large_desktop', 1200 ),
+			'max'  => Kirki::get_option( 'screen_large_desktop', 1200 ),
 			'step' => '1'
 		),
 	);
@@ -1149,7 +1149,7 @@ function shoestrap_customizer_settings( $controls ) {
 		'default'  => 300,
 		'choices'  => array(
 			'min'  => 0,
-			'max'  => get_theme_mod( 'screen_large_desktop', 1200 ),
+			'max'  => Kirki::get_option( 'screen_large_desktop', 1200 ),
 			'step' => '1'
 		),
 	);
@@ -1174,7 +1174,7 @@ function shoestrap_customizer_settings( $controls ) {
 		'default'  => 550,
 		'choices'  => array(
 			'min'  => -1,
-			'max'  => get_theme_mod( 'screen_large_desktop', 1200 ),
+			'max'  => Kirki::get_option( 'screen_large_desktop', 1200 ),
 			'step' => '1'
 		),
 	);
@@ -1189,7 +1189,7 @@ function shoestrap_customizer_settings( $controls ) {
 		'default'  => 300,
 		'choices'  => array(
 			'min'  => 0,
-			'max'  => get_theme_mod( 'screen_large_desktop', 1200 ),
+			'max'  => Kirki::get_option( 'screen_large_desktop', 1200 ),
 			'step' => '1'
 		),
 	);
@@ -1300,12 +1300,12 @@ function shoestrap_customizer_settings( $controls ) {
 		'setting'  => 'font_jumbotron_size',
 		'subtitle' => __( 'Font Size', 'shoestrap' ),
 		'section'  => 'jumbotron',
-		'default'  => ( 'px' == get_theme_mod( 'font_size_units', 'px' ) ) ? 20 : 1.8,
+		'default'  => ( 'px' == Kirki::get_option( 'font_size_units', 'px' ) ) ? 20 : 1.8,
 		'priority' => 24,
 		'choices'  => array(
-			'min'  => ( 'px' == get_theme_mod( 'font_size_units', 'px' ) ) ? 7 : 0.1,
-			'max'  => ( 'px' == get_theme_mod( 'font_size_units', 'px' ) ) ? 70 : 7,
-			'step' => ( 'px' == get_theme_mod( 'font_size_units', 'px' ) ) ? 1 : 0.01,
+			'min'  => ( 'px' == Kirki::get_option( 'font_size_units', 'px' ) ) ? 7 : 0.1,
+			'max'  => ( 'px' == Kirki::get_option( 'font_size_units', 'px' ) ) ? 70 : 7,
+			'step' => ( 'px' == Kirki::get_option( 'font_size_units', 'px' ) ) ? 1 : 0.01,
 		),
 	);
 

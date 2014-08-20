@@ -10,7 +10,7 @@ Timber::$locations = array(
 
 function shoestrap_timber_global_context( $data ) {
 
-	$data['theme_mods'] = get_theme_mods();
+	$data['theme_mods'] = Kirki::get_options();
 	$data['menu']['primary']   = has_nav_menu( 'primary_navigation' ) ? new TimberMenu( 'primary_navigation' ) : null;
 	$data['menu']['secondary'] = has_nav_menu( 'secondary_navigation' ) ? new TimberMenu( 'secondary_navigation' ) : null;
 

@@ -6,70 +6,88 @@
 function kirki_customizer_controls( $wp_customize ) {
 
 	$controls = apply_filters( 'kirki/controls', array() );
+	$config   = apply_filters( 'kirki/config', array() );
+
+	if ( ! isset( $config['option_mode'] ) || empty( $config['option_mode'] ) || $config['option_mode'] == 'theme_mod' ) {
+
+		$option_mode = 'theme_mod';
+
+	} else {
+
+		$option_mode = 'option';
+		$option_name = ( ! isset( $config['option_name'] ) || ! empty( $config['option_name'] ) ) ? 'kirki' : $config['option_name'];
+
+	}
 
 	if ( isset( $controls ) ) {
 		foreach ( $controls as $control ) {
 
 			if ( 'background' == $control['type'] ) {
 
-				$wp_customize->add_setting( $control['setting'] . '_color', array(
+				$control_before = ( 'theme_mod' == $option_mode ) ? $control['setting'] : $option_name . '[' . $control['setting'];
+				$control_after  = ( 'theme_mod' == $option_mode ) ? null : ']';
+
+				$wp_customize->add_setting( $control_before . '_color', array(
 					'default'    => $control['default']['color'],
-					'type'       => 'theme_mod',
+					'type'       => $option_mode,
 					// 'transport'  => 'postMessage',
 					'capability' => 'edit_theme_options'
 				) );
 
-				$wp_customize->add_setting( $control['setting'] . '_image', array(
+				$wp_customize->add_setting( $control_before . '_image' . $control_after, array(
 					'default'    => $control['default']['image'],
-					'type'       => 'theme_mod',
+					'type'       => $option_mode,
 					// 'transport'  => 'postMessage',
 					'capability' => 'edit_theme_options'
 				) );
 
-				$wp_customize->add_setting( $control['setting'] . '_repeat', array(
+				$wp_customize->add_setting( $control_before . '_repeat' . $control_after, array(
 					'default'    => $control['default']['repeat'],
-					'type'       => 'theme_mod',
+					'type'       => $option_mode,
 					// 'transport'  => 'postMessage',
 					'capability' => 'edit_theme_options'
 				) );
 
-				$wp_customize->add_setting( $control['setting'] . '_size', array(
+				$wp_customize->add_setting( $control_before . '_size' . $control_after, array(
 					'default'    => $control['default']['size'],
-					'type'       => 'theme_mod',
+					'type'       => $option_mode,
 					// 'transport'  => 'postMessage',
 					'capability' => 'edit_theme_options'
 				) );
 
-				$wp_customize->add_setting( $control['setting'] . '_attach', array(
+				$wp_customize->add_setting( $control_before . '_attach' . $control_after, array(
 					'default'    => $control['default']['attach'],
-					'type'       => 'theme_mod',
+					'type'       => $option_mode,
 					// 'transport'  => 'postMessage',
 					'capability' => 'edit_theme_options'
 				) );
 
-				$wp_customize->add_setting( $control['setting'] . '_position', array(
+				$wp_customize->add_setting( $control_before . '_position' . $control_after, array(
 					'default'    => $control['default']['position'],
-					'type'       => 'theme_mod',
+					'type'       => $option_mode,
 					// 'transport'   => 'postMessage',
 					'capability' => 'edit_theme_options'
 				) );
 
 				if ( false != $control['default']['opacity'] ) {
 
-					$wp_customize->add_setting( $control['setting'] . '_opacity', array(
+					$wp_customize->add_setting( $control_before . '_opacity' . $control_after, array(
 						'default'    => $control['default']['opacity'],
-						'type'       => 'theme_mod',
+						'type'       => $option_mode,
 						// 'transport'  => 'postMessage',
 						'capability' => 'edit_theme_options'
 					) );
 
 				}
+
 			} else {
 
+				$control_name = ( 'theme_mod' == $option_mode ) ? $control['setting'] : $option_name . '[' . $control['setting'] . ']';
+
 				// Add settings
-				$wp_customize->add_setting( $control['setting'], array(
+				$wp_customize->add_setting( $control_name, array(
 					'default'    => isset( $control['default'] ) ? $control['default'] : '',
-					'type'       => 'theme_mod',
+					'type'       => $option_mode,
 					// 'transport'  => 'postMessage',
 					'capability' => 'edit_theme_options'
 				) );
@@ -79,10 +97,10 @@ function kirki_customizer_controls( $wp_customize ) {
 			// Checkbox controls
 			if ( 'checkbox' == $control['type'] ) {
 
-				$wp_customize->add_control( new Kirki_Customize_Checkbox_Control( $wp_customize, $control['setting'], array(
+				$wp_customize->add_control( new Kirki_Customize_Checkbox_Control( $wp_customize, $control_name, array(
 						'label'       => isset( $control['label'] ) ? $control['label'] : '',
 						'section'     => $control['section'],
-						'settings'    => $control['setting'],
+						'settings'    => $control_name,
 						'priority'    => $control['priority'],
 						'description' => isset( $control['description'] ) ? $control['description'] : null,
 						'subtitle'    => isset( $control['subtitle'] ) ? $control['subtitle'] : '',
@@ -94,10 +112,13 @@ function kirki_customizer_controls( $wp_customize ) {
 			// Background Controls
 			} elseif ( 'background' == $control['type'] ) {
 
-				$wp_customize->add_control( new Kirki_Customize_Color_Control( $wp_customize, $control['setting'] . '_color', array(
+				$control_before = ( 'theme_mod' == $option_mode ) ? $control['setting'] : $option_name . '[' . $control['setting'];
+				$control_after  = ( 'theme_mod' == $option_mode ) ? null : ']';
+
+				$wp_customize->add_control( new Kirki_Customize_Color_Control( $wp_customize, $control_before . '_color' . $control_after, array(
 						'label'       => isset( $control['label'] ) ? $control['label'] : '',
 						'section'     => $control['section'],
-						'settings'    => $control['setting'] . '_color',
+						'settings'    => $control_before . '_color' . $control_after,
 						'priority'    => $control['priority'],
 						'description' => isset( $control['description'] ) ? $control['description'] : null,
 						'subtitle'    => __( 'Background Color', 'kirki' ),
@@ -106,10 +127,10 @@ function kirki_customizer_controls( $wp_customize ) {
 					) )
 				);
 
-				$wp_customize->add_control( new Kirki_Customize_Image_Control( $wp_customize, $control['setting'] . '_image', array(
+				$wp_customize->add_control( new Kirki_Customize_Image_Control( $wp_customize, $control_before . '_image' . $control_after, array(
 						'label'       => null,
 						'section'     => $control['section'],
-						'settings'    => $control['setting'] . '_image',
+						'settings'    => $control_before . '_image' . $control_after,
 						'priority'    => $control['priority'] + 1,
 						'description' => null,
 						'subtitle'    => __( 'Background Image', 'kirki' ),
@@ -118,10 +139,10 @@ function kirki_customizer_controls( $wp_customize ) {
 					) )
 				);
 
-				$wp_customize->add_control( new Kirki_Select_Control( $wp_customize, $control['setting'] . '_repeat', array(
+				$wp_customize->add_control( new Kirki_Select_Control( $wp_customize, $control_before . '_repeat' . $control_after, array(
 						'label'       => null,
 						'section'     => $control['section'],
-						'settings'    => $control['setting'] . '_repeat',
+						'settings'    => $control_before . '_repeat' . $control_after,
 						'priority'    => $control['priority'] + 2,
 						'choices'     => array(
 							'no-repeat' => __( 'No Repeat', 'kirki' ),
@@ -137,10 +158,10 @@ function kirki_customizer_controls( $wp_customize ) {
 					) )
 				);
 
-				$wp_customize->add_control( new Kirki_Customize_Radio_Control( $wp_customize, $control['setting'] . '_size', array(
+				$wp_customize->add_control( new Kirki_Customize_Radio_Control( $wp_customize, $control_before . '_size' . $control_after, array(
 						'label'       => null,
 						'section'     => $control['section'],
-						'settings'    => $control['setting'] . '_size',
+						'settings'    => $control_before . '_size' . $control_after,
 						'priority'    => $control['priority'] + 3,
 						'choices'     => array(
 							'inherit' => __( 'Inherit', 'kirki' ),
@@ -155,10 +176,10 @@ function kirki_customizer_controls( $wp_customize ) {
 					) )
 				);
 
-				$wp_customize->add_control( new Kirki_Customize_Radio_Control( $wp_customize, $control['setting'] . '_attach', array(
+				$wp_customize->add_control( new Kirki_Customize_Radio_Control( $wp_customize, $control_before . '_attach' . $control_after, array(
 						'label'       => null,
 						'section'     => $control['section'],
-						'settings'    => $control['setting'] . '_attach',
+						'settings'    => $control_before . '_attach' . $control_after,
 						'priority'    => $control['priority'] + 4,
 						'choices'     => array(
 							'inherit' => __( 'Inherit', 'kirki' ),
@@ -173,10 +194,10 @@ function kirki_customizer_controls( $wp_customize ) {
 					) )
 				);
 
-				$wp_customize->add_control( new Kirki_Select_Control( $wp_customize, $control['setting'] . '_position', array(
+				$wp_customize->add_control( new Kirki_Select_Control( $wp_customize, $control_before . '_position' . $control_after, array(
 						'label'       => null,
 						'section'     => $control['section'],
-						'settings'    => $control['setting'] . '_position',
+						'settings'    => $control_before . '_position' . $control_after,
 						'priority'    => $control['priority'] + 5,
 						'choices'     => array(
 							'left-top'      => __( 'Left Top', 'kirki' ),
@@ -197,10 +218,10 @@ function kirki_customizer_controls( $wp_customize ) {
 				);
 
 				if ( false != $control['default']['opacity'] ) {
-					$wp_customize->add_control( new Kirki_Customize_Sliderui_Control( $wp_customize, $control['setting'] . '_opacity', array(
+					$wp_customize->add_control( new Kirki_Customize_Sliderui_Control( $wp_customize, $control_before . '_opacity' . $control_after, array(
 							'label'       => null,
 							'section'     => $control['section'],
-							'settings'    => $control['setting'] . '_opacity',
+							'settings'    => $control_before . '_opacity' . $control_after,
 							'priority'    => $control['priority'] + 6,
 							'choices'  => array(
 								'min'  => 0,
@@ -218,10 +239,10 @@ function kirki_customizer_controls( $wp_customize ) {
 			// Color Controls
 			} elseif ( 'color' == $control['type'] ) {
 
-				$wp_customize->add_control( new Kirki_Customize_Color_Control( $wp_customize, $control['setting'], array(
+				$wp_customize->add_control( new Kirki_Customize_Color_Control( $wp_customize, $control_name, array(
 						'label'       => isset( $control['label'] ) ? $control['label'] : '',
 						'section'     => $control['section'],
-						'settings'    => $control['setting'],
+						'settings'    => $control_name,
 						'priority'    => isset( $control['priority'] ) ? $control['priority'] : '',
 						'description' => isset( $control['description'] ) ? $control['description'] : null,
 						'subtitle'    => isset( $control['subtitle'] ) ? $control['subtitle'] : '',
@@ -233,10 +254,10 @@ function kirki_customizer_controls( $wp_customize ) {
 			// Image Controls
 			} elseif ( 'image' == $control['type'] ) {
 
-				$wp_customize->add_control( new Kirki_Customize_Image_Control( $wp_customize, $control['setting'], array(
+				$wp_customize->add_control( new Kirki_Customize_Image_Control( $wp_customize, $control_name, array(
 						'label'       => isset( $control['label'] ) ? $control['label'] : '',
 						'section'     => $control['section'],
-						'settings'    => $control['setting'],
+						'settings'    => $control_name,
 						'priority'    => $control['priority'],
 						'description' => isset( $control['description'] ) ? $control['description'] : null,
 						'subtitle'    => isset( $control['subtitle'] ) ? $control['subtitle'] : '',
@@ -248,10 +269,10 @@ function kirki_customizer_controls( $wp_customize ) {
 			// Radio Controls
 			} elseif ( 'radio' == $control['type'] ) {
 
-				$wp_customize->add_control( new Kirki_Customize_Radio_Control( $wp_customize, $control['setting'], array(
+				$wp_customize->add_control( new Kirki_Customize_Radio_Control( $wp_customize, $control_name, array(
 						'label'       => isset( $control['label'] ) ? $control['label'] : '',
 						'section'     => $control['section'],
-						'settings'    => $control['setting'],
+						'settings'    => $control_name,
 						'priority'    => $control['priority'],
 						'choices'     => $control['choices'],
 						'description' => isset( $control['description'] ) ? $control['description'] : null,
@@ -265,10 +286,10 @@ function kirki_customizer_controls( $wp_customize ) {
 			// Select Controls
 			} elseif ( 'select' == $control['type'] ) {
 
-				$wp_customize->add_control( new Kirki_Select_Control( $wp_customize, $control['setting'], array(
+				$wp_customize->add_control( new Kirki_Select_Control( $wp_customize, $control_name, array(
 						'label'       => isset( $control['label'] ) ? $control['label'] : '',
 						'section'     => $control['section'],
-						'settings'    => $control['setting'],
+						'settings'    => $control_name,
 						'priority'    => $control['priority'],
 						'choices'     => $control['choices'],
 						'description' => isset( $control['description'] ) ? $control['description'] : null,
@@ -281,10 +302,10 @@ function kirki_customizer_controls( $wp_customize ) {
 			// Slider Controls
 			} elseif ( 'slider' == $control['type'] ) {
 
-				$wp_customize->add_control( new Kirki_Customize_Sliderui_Control( $wp_customize, $control['setting'], array(
+				$wp_customize->add_control( new Kirki_Customize_Sliderui_Control( $wp_customize, $control_name, array(
 						'label'       => isset( $control['label'] ) ? $control['label'] : '',
 						'section'     => $control['section'],
-						'settings'    => $control['setting'],
+						'settings'    => $control_name,
 						'priority'    => $control['priority'],
 						'choices'     => $control['choices'],
 						'description' => isset( $control['description'] ) ? $control['description'] : null,
@@ -297,10 +318,10 @@ function kirki_customizer_controls( $wp_customize ) {
 			// Text Controls
 			} elseif ( 'text' == $control['type'] ) {
 
-				$wp_customize->add_control( new Kirki_Customize_Text_Control( $wp_customize, $control['setting'], array(
+				$wp_customize->add_control( new Kirki_Customize_Text_Control( $wp_customize, $control_name, array(
 						'label'       => isset( $control['label'] ) ? $control['label'] : '',
 						'section'     => $control['section'],
-						'settings'    => $control['setting'],
+						'settings'    => $control_name,
 						'priority'    => $control['priority'],
 						'description' => isset( $control['description'] ) ? $control['description'] : null,
 						'subtitle'    => isset( $control['subtitle'] ) ? $control['subtitle'] : '',
@@ -312,10 +333,10 @@ function kirki_customizer_controls( $wp_customize ) {
 			// Text Controls
 			} elseif ( 'textarea' == $control['type'] ) {
 
-				$wp_customize->add_control( new Kirki_Customize_Textarea_Control( $wp_customize, $control['setting'], array(
+				$wp_customize->add_control( new Kirki_Customize_Textarea_Control( $wp_customize, $control_name, array(
 						'label'       => $control['label'],
 						'section'     => $control['section'],
-						'settings'    => $control['setting'],
+						'settings'    => $control_name,
 						'priority'    => $control['priority'],
 						'description' => isset( $control['description'] ) ? $control['description'] : null,
 						'subtitle'    => isset( $control['subtitle'] ) ? $control['subtitle'] : '',
@@ -327,10 +348,10 @@ function kirki_customizer_controls( $wp_customize ) {
 			// Upload Controls
 			} elseif ( 'upload' == $control['type'] ) {
 
-				$wp_customize->add_control( new Kirki_Customize_Upload_Control( $wp_customize, $control['setting'], array(
+				$wp_customize->add_control( new Kirki_Customize_Upload_Control( $wp_customize, $control_name, array(
 						'label'       => $control['label'],
 						'section'     => $control['section'],
-						'settings'    => $control['setting'],
+						'settings'    => $control_name,
 						'priority'    => $control['priority'],
 						'choices'     => $control['choices'],
 						'description' => isset( $control['description'] ) ? $control['description'] : null,
@@ -343,10 +364,10 @@ function kirki_customizer_controls( $wp_customize ) {
 			// Number Controls
 			} elseif ( 'number' == $control['type'] ) {
 
-				$wp_customize->add_control( new Kirki_Customize_Number_Control( $wp_customize, $control['setting'], array(
+				$wp_customize->add_control( new Kirki_Customize_Number_Control( $wp_customize, $control_name, array(
 						'label'       => $control['label'],
 						'section'     => $control['section'],
-						'settings'    => $control['setting'],
+						'settings'    => $control_name,
 						'priority'    => $control['priority'],
 						'description' => isset( $control['description'] ) ? $control['description'] : null,
 						'subtitle'    => isset( $control['subtitle'] ) ? $control['subtitle'] : '',
@@ -357,10 +378,10 @@ function kirki_customizer_controls( $wp_customize ) {
 			// Multicheck Controls
 			} elseif ( 'multicheck' == $control['type'] ) {
 
-				$wp_customize->add_control( new Kirki_Customize_Multicheck_Control( $wp_customize, $control['setting'], array(
+				$wp_customize->add_control( new Kirki_Customize_Multicheck_Control( $wp_customize, $control_name, array(
 						'label'       => $control['label'],
 						'section'     => $control['section'],
-						'settings'    => $control['setting'],
+						'settings'    => $control_name,
 						'priority'    => $control['priority'],
 						'choices'     => $control['choices'],
 						'description' => isset( $control['description'] ) ? $control['description'] : null,
@@ -373,10 +394,10 @@ function kirki_customizer_controls( $wp_customize ) {
 			// Separator Controls
 			} elseif ( 'group_title' == $control['type'] ) {
 
-				$wp_customize->add_control( new Kirki_Customize_Group_Title_Control( $wp_customize, $control['setting'], array(
+				$wp_customize->add_control( new Kirki_Customize_Group_Title_Control( $wp_customize, $control_name, array(
 						'label'       => $control['label'],
 						'section'     => $control['section'],
-						'settings'    => $control['setting'],
+						'settings'    => $control_name,
 						'priority'    => $control['priority'],
 						'description' => isset( $control['description'] ) ? $control['description'] : null,
 						'subtitle'    => isset( $control['subtitle'] ) ? $control['subtitle'] : '',

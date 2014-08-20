@@ -225,6 +225,64 @@ class Kirki {
 
 	}
 
+	/*
+	 * Get the theme_mod or option from the database.
+	 */
+	public static function get_option( $option = '', $default = '' ) {
+
+		$config   = apply_filters( 'kirki/config', array() );
+
+		if ( ! isset( $config['option_mode'] ) || empty( $config['option_mode'] ) || $config['option_mode'] == 'theme_mod' ) {
+
+			// This is a theme_mod
+			$option = get_theme_mod( $option, $default );
+
+		} else {
+
+			// This is an option
+			$option_name = ( ! isset( $config['option_name'] ) || ! empty( $config['option_name'] ) ) ? 'kirki' : $config['option_name'];
+			$options = get_option( $option_name, array() );
+
+			if ( ! isset( $options[$option] ) || empty( $options[$option] ) ) {
+
+				// Option is not set in the db, use the default value.
+				$option = $default;
+
+			} else {
+
+				// Use the value from the database
+				$option = $options[$option];
+
+			}
+
+		}
+
+		return $option;
+
+	}
+
+	/*
+	 * Get all the options from the db
+	 */
+	public static function get_options() {
+
+		$config   = apply_filters( 'kirki/config', array() );
+
+		if ( ! isset( $config['option_mode'] ) || empty( $config['option_mode'] ) || $config['option_mode'] == 'theme_mod' ) {
+
+			// We're using theme_mods
+			return get_theme_mods();
+
+		} else {
+
+			// We're using options
+			$option_name = ( ! isset( $config['option_name'] ) || ! empty( $config['option_name'] ) ) ? 'kirki' : $config['option_name'];
+			return get_option( $option_name, array() );
+
+		}
+
+	}
+
 }
 
 $kirki = new Kirki();

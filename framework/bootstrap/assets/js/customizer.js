@@ -1,9 +1,9 @@
-(function($){
+jQuery(document).ready(function($) {
 
     var kirki_functionality = {
         less_vars: {},
         //config_array: [],
-        parent_customizer_base: window.parent.wp.customize.settings, 
+        parent_customizer_base: window.parent.wp.customize.settings,
         getParentControls: function(){
             var self = this;
             return self.parent_customizer_base.controls;
@@ -29,12 +29,12 @@
         },
         bindListeners: function(){
             // Get reference to kirki object literal
-            var self = this; 
+            var self = this;
             for(var setting_name in self.getParentControls()){
                 $target = parent.jQuery('input[data-customize-setting-link="'+ setting_name +'"]');
                 if($target.hasClass('kirki-color-picker')) {
                     $target.iris({
-                        change: function(event,ui){ 
+                        change: function(event,ui){
                             var less_var = $(this).data('framework-var');
                             self.less_vars[less_var] = ui.color.toString();
                             self.modifyVars();
@@ -48,4 +48,4 @@
     _(kirki).extend(kirki_functionality);
     kirki.bindListeners();
 
-})(jQuery);
+});

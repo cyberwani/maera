@@ -63,7 +63,7 @@ function shoestrap_scripts() {
     } else {
 
         // Get the cached CSS from the database
-        $cache = get_theme_mod( 'css_cache', '' );
+        $cache = Kirki::get_option( 'css_cache', '' );
 
         // If the transient does not exist, then create it.
         if ( $cache === false || empty( $cache ) || '' == $cache ) {
