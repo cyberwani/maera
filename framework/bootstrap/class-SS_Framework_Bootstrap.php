@@ -53,9 +53,6 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 			// Trigger the compiler the first time the theme is enabled
 			add_action( 'after_switch_theme', array( $compiler, 'makecss' ) );
 
-			// Enqueue the scripts
-			add_action( 'wp_enqueue_scripts', array( $this, 'scripts' ), 110 );
-
 			// Add the framework Timber modifications
 			add_filter( 'timber_context', array( $this, 'timber_extras' ), 20 );
 
@@ -88,26 +85,6 @@ if ( ! class_exists( 'SS_Framework_Bootstrap' ) ) {
 			}
 
 			return self::$instance;
-		}
-
-
-		/**
-		 * Register all scripts and additional stylesheets (if necessary)
-		 */
-		function scripts() {
-
-			wp_register_script( 'bootstrap-min', get_template_directory_uri() . '/framework/bootstrap/assets/js/bootstrap.min.js', false, null, true  );
-			wp_enqueue_script( 'bootstrap-min' );
-
-			if ( get_theme_mod( 'wai_aria', 0 ) == 1 ) {
-
-				wp_register_script( 'bootstrap-accessibility', get_template_directory_uri() . '/framework/bootstrap/assets/js/bootstrap-accessibility.min.js', false, null, true  );
-				wp_enqueue_script( 'bootstrap-accessibility' );
-
-				wp_register_style( 'bootstrap-accessibility', get_template_directory_uri() . '/framework/bootstrap/assets/css/bootstrap-accessibility.css', false, null, true );
-				wp_enqueue_style( 'bootstrap-accessibility' );
-
-			}
 
 		}
 

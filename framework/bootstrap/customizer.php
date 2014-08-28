@@ -393,6 +393,7 @@ function shoestrap_customizer_settings( $controls ) {
 		'section'  => 'nav_bg',
 		'default'  => '#f8f8f8',
 		'priority' => 30,
+        'framework_var' => '@navbar-default-bg'
 	);
 
 	$controls[] = array(
@@ -431,6 +432,7 @@ function shoestrap_customizer_settings( $controls ) {
 		'section'  => 'typo_nav',
 		'default'  => '"Helvetica Neue", Helvetica, Arial, sans-serif',
 		'priority' => 40,
+        'framework_var' => '@nav-font-family',
 	);
 
 	$controls[] = array(
@@ -450,6 +452,7 @@ function shoestrap_customizer_settings( $controls ) {
 		'section'  => 'typo_nav',
 		'default'  => '#333333',
 		'priority' => 42,
+		'framework_var' => '@navbar-default-color'
 	);
 
 	$controls[] = array(
@@ -492,6 +495,7 @@ function shoestrap_customizer_settings( $controls ) {
 			'max'  => 70,
 			'step' => 1,
 		),
+		'framework_var' => '@nav-font-weight'
 	);
 
 	//-------------------------------------------------
@@ -605,6 +609,7 @@ function shoestrap_customizer_settings( $controls ) {
 		),
 		'priority' => 31,
 		'output' => 'body.bootstrap #wrap-main-section',
+		'framework_var' => '@body-bg',
 	);
 
 	//-------------------------------------------------
@@ -618,6 +623,7 @@ function shoestrap_customizer_settings( $controls ) {
 		'section'  => 'typo_base',
 		'default'  => '"Helvetica Neue", Helvetica, Arial, sans-serif',
 		'priority' => 20,
+		'framework_var' => '@font-family-base',
 	);
 
 	$controls[] = array(
@@ -657,6 +663,7 @@ function shoestrap_customizer_settings( $controls ) {
 		'section'  => 'typo_base',
 		'default'  => '#333333',
 		'priority' => 23,
+		'framework_var' => '@text-color'
 	);
 
 	$controls[] = array(
@@ -671,6 +678,7 @@ function shoestrap_customizer_settings( $controls ) {
 			'max'  => 900,
 			'step' => 100,
 		),
+		'framework_var' => '@base-font-weight'
 	);
 
 	$controls[] = array(
@@ -685,6 +693,7 @@ function shoestrap_customizer_settings( $controls ) {
 			'max'  => ( 'px' == get_theme_mod( 'font_size_units', 'px' ) ) ? 70 : 7,
 			'step' => ( 'px' == get_theme_mod( 'font_size_units', 'px' ) ) ? 1 : 0.01,
 		),
+		'framework_var' => '@font-size-base',
 	);
 
 	$controls[] = array(
@@ -699,6 +708,7 @@ function shoestrap_customizer_settings( $controls ) {
 			'max'  => 3,
 			'step' => 0.1,
 		),
+		'framework_var' => '@line-height-base',
 	);
 
 	$controls[] = array(
@@ -708,6 +718,7 @@ function shoestrap_customizer_settings( $controls ) {
 		'section'  => 'typo_headers',
 		'default'  => '"Helvetica Neue", Helvetica, Arial, sans-serif',
 		'priority' => 30,
+		'framework_var' => '@headings-font-family',
 	);
 
 	$controls[] = array(
@@ -760,6 +771,7 @@ function shoestrap_customizer_settings( $controls ) {
 			'max'  => 900,
 			'step' => 100,
 		),
+		'framework_var' => '@headings-font-weight'
 	);
 
 	$controls[] = array(
@@ -985,6 +997,7 @@ function shoestrap_customizer_settings( $controls ) {
 		),
 		'priority' => 1,
 		'output' => '.jumbotron',
+		'framework_var' => 'jumbotron-bg'
 	);
 
 	$controls[] = array(
@@ -1023,6 +1036,7 @@ function shoestrap_customizer_settings( $controls ) {
 		'section'  => 'typo_jumbo',
 		'default'  => '#333333',
 		'priority' => 22,
+		'framework_var' => '@jumbotron-color'
 	);
 
 	$controls[] = array(
